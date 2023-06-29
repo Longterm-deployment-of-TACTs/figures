@@ -7,16 +7,23 @@ library(ggplot2)
 require(unikn)
 library(RColorBrewer)
 library(ggpubr)
-library(gghighlight)
 library(ggridges)
 library(ggthemes)
 library(ggrepel)
+
+setwd("C:/moru_psu_dtact_comparion/A4")
+
 percent_first <- function(x) {
   x <- sprintf("%d%%", round(x*100))
   x[2:length(x)] <- sub("%$", "", x[2:length(x)])
   x
 }
-setwd("C:/moru_psu_dtact_comparion/A4")
+
+f <- function(x) {
+  r <- quantile(x, probs = c(0.10, 0.25, 0.5, 0.75, 0.90))
+  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+  r
+}
 
 
 #### A1 per month
@@ -103,7 +110,7 @@ gg2<-gg2+theme_minimal(base_size = 16)+
 gg2
 
 # tiff("Figure5_v77.tiff", width = 25, height = 30, units = 'cm', res = 300)
-gg <- ggarrange(g2 + xlab(""), gg2+ theme(strip.text.x = element_blank()), ncol = 1, nrow = 2)
+gg <- ggarrange(g2 + xlab(""), gg2+ theme(strip.text.x = element_blank()), labels = c("A", "B"), ncol = 1, nrow = 2)
 gg
 ggsave("Figure4.pdf", gg, width = 25, height = 30, units = 'cm', dpi = 300)
 # dev.off()
